@@ -8,10 +8,6 @@ const Header = () => {
           alt="NetflixLogo"
         />
       </div>
-
-      <form>
-        
-      </form>
     </>
   );
 };
