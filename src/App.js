@@ -1,11 +1,15 @@
 
 import Body from './components/body';
+import { UserInfoProvider } from './context/UserInfoContext';
 
 function App() {
   return (
-   
-      <Body/>
-    
+    /*<UserInfoProvider>
+      <Body />
+    </UserInfoProvider>*/
+    <>
+      <Body />
+    </>
   );
 }
 
