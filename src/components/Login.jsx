@@ -1,13 +1,19 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+// Outlet-context alternative: import { useOutletContext } from "react-router-dom";
 import Header from "./header";
 import { checkValidateData } from "../utils/validate";
-import {createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/fierbase";
 
 const Login = () => {
+  // Alternative for the Outlet-context approach in body.jsx:
+  // const { onLoginSuccess } = useOutletContext();
   const [isSignInForm, setIsSignInForm] = useState(true);
 
   const [creadentialError, setCredentialError] = useState(null);
+
+  const navigate = useNavigate();
 
   const email = useRef(null);
   const password = useRef(null);
@@ -39,7 +45,7 @@ const Login = () => {
           // Signed up
           const user = userCredential.user;
           console.log("User ::::::::::::", user);
-          
+          navigate("/browser");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -47,6 +53,23 @@ const Login = () => {
           setCredentialError(errorCode, "-", errorMessage);
         });
     } else {
+      signInWithEmailAndPassword(
+        auth,
+        email?.current?.value,
+        password?.current?.value
+      ).then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("Login User :::::::", user);
+        navigate("/browser");
+        // Alternative for Outlet context: onLoginSuccess();
+      }).catch((error) => {
+         console.log("Login error :::::::", error);
+        const errorCode = error.code;
+         console.log("Login errorCode :::::::", errorCode);
+        const errorMessage = error.message;
+        setCredentialError(errorCode, "-", errorMessage);
+      })
     }
   };
 
